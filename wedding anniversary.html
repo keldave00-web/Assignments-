@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Happy 27th Anniversary 💖</title>
+  <style>
+    :root{
+      --bg:#fff6f9;    
+      --card:#ffffff;
+      --accent:#fff6fa3;
+      --muted:#6b6b6b;
+    }
+    *{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;}
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: linear-gradient(180deg,var(--bg),#fff);
+      padding:24px;
+    }
+    .card{
+      width:min(760px,95%);
+      background:var(--card);
+      border-radius:18px;
+      box-shadow:0 10px 30px rgba(0,0,0,.08);
+      padding:36px;
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+    }
+    h1{
+      margin:0 0 8px;
+      font-size:2rem;
+      letter-spacing:-0.02em;
+      color:var(--accent);
+    }
+    p.lead{
+      margin:0 0 20px;
+      color:var(--muted);
+      font-size:1.02rem;
+    }
+    .message{
+      font-size:1.25rem;
+      margin:18px 0 26px;
+    }
+    .heart{
+      display:inline-block;
+      font-size:1.35rem;
+      transform-origin:center;
+      animation:beat 1s infinite alternate;
+    }
+    @keyframes beat{
+      from{transform:scale(1)}
+      to{transform:scale(1.12)}
+    }
+    .controls{
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      margin-top:8px;
+    }
+    button{
+      background:var(--accent);
+      color:black;
+      border:0;
+      padding:10px 16px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:600;
+      box-shadow:0 6px 14px rgba(255,111,163,.18);
+    }
+    button.secondary{
+      background:transparent;
+      color:var(--accent);
+      border:2px solid rgba(255,111,163,.18);
+      box-shadow:none;
+      font-weight:600;
+    }
+
+    /* Simple "confetti" pieces */
+    .confetti{
+      pointer-events:none;
+      position:absolute;
+      inset:0;
+      overflow:hidden;
+    }
+    .confetti span{
+      position:absolute;
+      width:10px;
+      height:14px;
+      opacity:0.95;
+      transform-origin:center;
+      animation:fall linear forwards;
+    }
+    @keyframes fall{
+      to{transform:translateY(120vh) rotate(540deg); opacity:0.0;}
+    }
+
+    footer{margin-top:20px;color:#999;font-size:0.9rem;}    
+  </style>
+</head>
+<body>
+  <div class="card" role="main" aria-label="Anniversary card">
+    <h1>Happy 27th Anniversary</h1>
+    <p class="lead">To my lovely parents —I wish you a 27th beautiful years together</p>
+
+    <div class="message">
+      <strong>Happy 27th anniversary 💖 to you my lovely parents</strong>
+      <span class="heart" aria-hidden="true">💖</span>
+    </div>
+
+    <div class="controls">
+      <button id="confettiBtn">Celebrate 🎉</button>
+      <button id="resetBtn" class="secondary">Reset</button>
+    </div>
+
+    <div class="confetti" id="confettiArea" aria-hidden="true"></div>
+
+    <footer>Copy this file, open it in a browser, and click "Celebrate".</footer>
+  </div>
+
+  <script>
+    const confettiArea = document.getElementById('confettiArea');
+    const confettiBtn = document.getElementById('confettiBtn');
+    const resetBtn = document.getElementById('resetBtn');
+
+    function makePiece(x){
+      const s = document.createElement('span');
+      const colors = ['#FF6FA3','#FFD36F','#6FD3FF','#C36FFF','#8AFFC1'];
+      s.style.left = x + '%';
+      s.style.background = colors[Math.floor(Math.random()*colors.length)];
+      s.style.width = (8 + Math.random()*12) + 'px';
+      s.style.height = (10 + Math.random()*18) + 'px';
+      s.style.opacity = 0.95;
+      s.style.top = (-10 - Math.random()*20) + 'px';
+      s.style.transform = `rotate(${Math.random()*360}deg)`;
+      s.style.animationDuration = (1.2 + Math.random()*1.6) + 's';
+      s.style.animationDelay = (Math.random()*0.08) + 's';
+      confettiArea.appendChild(s);
+      // remove after animation ends
+      setTimeout(()=> s.remove(), 3000);
+    }
+
+    function burst(){
+      for(let i=0;i<40;i++){
+        makePiece(Math.random()*100);
+      }
+    }
+
+    confettiBtn.addEventListener('click', ()=> {
+      burst();
+      // small repeated bursts for extra flair
+      let count=0;
+      const tid = setInterval(()=> {
+        burst();
+        count++;
+        if(count>3) clearInterval(tid);
+      }, 350);
+    });
+
+    resetBtn.addEventListener('click', ()=> {
+      confettiArea.innerHTML='';
+    });
+  </script>
+</body>
+</html>
